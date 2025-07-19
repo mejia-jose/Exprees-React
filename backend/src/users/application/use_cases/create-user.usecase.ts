@@ -10,25 +10,17 @@ export class CreateUserUseCase
     constructor(private readonly userRepo: IUserRepository){}
 
     /** Permite ejecutar el caso de uso de crear usuario **/
-    async run(user: CreateUserDTO)
+    async run(user: CreateUserDTO):Promise<UserEntity>
     {
         try
         {
             const { name, lastname,username, hasPassport, birthday, age} = user;
             const userInstances = new UserEntity(name,lastname,username,birthday,hasPassport,age);
-            const result = await this.userRepo.save(userInstances);
-
-            if(!result)
-            {
-                return MapResponse.ResultJson(false, UserMessages.ERROR.ERROR_CREATE);
-            }
-
-            return MapResponse.ResultJson(true, UserMessages.SUCCESS.USER_CREATE);
+            return await this.userRepo.save(userInstances);
             
         } catch (error) 
         {
-          const errorMessages = error instanceof Error ? error.message : String(error);
-          return MapResponse.ResultJson(false, UserMessages.ERROR.ERROR_OPERATION_SAVE, errorMessages); 
+          throw new Error(UserMessages.ERROR.ERROR_CREATE);
         }
     }
 }
