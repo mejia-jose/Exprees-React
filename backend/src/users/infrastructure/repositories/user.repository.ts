@@ -30,19 +30,13 @@ export class UserRepository implements IUserRepository
     /** Permite guardar la información de un nuevo usuario **/
     async save(user: UserEntity):Promise<UserEntity>
     {
-       try 
-       {
-         this.users.set(user.id, user);
-         if(!this.users.has(user.id))
-         {
-            throw new Error(UserMessages.ERROR.ERROR_CREATE);
-         }
+        this.users.set(user.id, user);
+        if(!this.users.has(user.id))
+        {
+        throw new Error(UserMessages.ERROR.ERROR_CREATE);
+        }
 
-         return user;
-        
-       } catch (error) {
-          throw new Error(UserMessages.ERROR.ERROR_OPERATION_SAVE+error);
-       }
+        return user;
     }
 
     /** Permite actualizar la información de un usuario **/

@@ -2,7 +2,8 @@ import { v4 as uuidv4} from 'uuid';
 
 export class UserEntity
 {
-    public id: string;
+    public readonly id: string;
+    private readonly registeredAt: Date;
 
     constructor(
       public name: string,
@@ -11,9 +12,9 @@ export class UserEntity
       public birthday: Date,
       public hasPassport: boolean,
       public age: number,
-      public registeredAt: Date,
     )
     {
-        this.id = uuidv4();
+      this.id = uuidv4();
+      this.registeredAt = new Date();
     }
 }
