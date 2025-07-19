@@ -1,5 +1,9 @@
+import { v4 as uuidv4} from 'uuid';
+
 export class UserEntity
 {
+    public id: string;
+
     constructor(
       public name: string,
       public lastname: string,
@@ -9,5 +13,7 @@ export class UserEntity
       public age: number,
       public registeredAt: Date,
     )
-    {}
+    {
+        this.id = uuidv4();
+    }
 }
