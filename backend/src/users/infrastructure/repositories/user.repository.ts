@@ -1,5 +1,5 @@
-import { UserEntity } from "../../domain/entities/UserEntity";
-import { IUserRepository } from "../../domain/ports/IUserRepository";
+import { UserEntity } from "../../domain/entities/user.entity";
+import { IUserRepository } from "../../domain/ports/user.repository.interface";
 import { UserMessages } from "../../../shared/constants/messages";
 
 export class UserRepository implements IUserRepository

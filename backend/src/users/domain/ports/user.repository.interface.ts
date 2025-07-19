@@ -1,4 +1,4 @@
-import { UserEntity } from "../entities/UserEntity";
+import { UserEntity } from "../entities/user.entity";
 
 /** Se define el contrato del repositorio de User **/
 export interface IUserRepository
