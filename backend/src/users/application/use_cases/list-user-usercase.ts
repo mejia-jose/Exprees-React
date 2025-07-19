@@ -6,7 +6,7 @@ export class ListUserUseCase
     constructor(private readonly userRepo: IUserRepository){}
 
     /**Permite obtener el listado de usuarios **/
-    async getUsers(pageNumber: 1, pageElements: 10)
+    async getUsers(pageNumber: number, pageElements: number)
     {
         try 
         {

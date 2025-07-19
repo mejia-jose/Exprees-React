@@ -11,7 +11,7 @@ export const UserMessages =
    SUCCESS:
    {
      USER_CREATE: 'El usuario se ha creado correctamente.',
-     USER_REGISTER: 'Se encontraron usuarios registrados.',
+     USERS_FOUND: 'Listado de usuarios obtenido exitosamente.',
      NO_INFORMATION: 'No se encontraron usuarios registrados.',
    }
 }
