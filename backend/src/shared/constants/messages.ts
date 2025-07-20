@@ -9,13 +9,16 @@ export const UserMessages =
      ERROR_GENERAL: 'Errores de validación:',
      ERROR_PAGINATION: 'Los parametrós de paginación deben ser mayores a 0.',
      ID_IS_REQUIRED: 'El ID del usuario no es válido, por favor proporcione un ID válido.',
+     ERROR_UPDATE: 'Ha ocurrido un error y no ha sido posible actualizar la información del usuario.',
+     ERROR_DELETE: 'Ha ocurrido un error y no ha sido posible eliminar la información del usuario.'
    },
 
    SUCCESS:
    {
-     USER_CREATE: 'El usuario se ha creado correctamente.',
+     CREATE_OK: 'El usuario se ha creado correctamente.',
      USERS_FOUND: 'Listado de usuarios obtenido exitosamente.',
      NO_INFORMATION: 'No se encontraron usuarios registrados.',
-     USER_UPDATE: 'La información del usuario fue actualizada correctamente.',
+     UPDATE_OK: 'La información del usuario fue actualizada correctamente.',
+     DELETE_OK: 'El usuario fue eliminado correctamente.',
    }
 }

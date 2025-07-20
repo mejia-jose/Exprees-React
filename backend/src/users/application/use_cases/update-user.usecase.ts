@@ -32,7 +32,7 @@ export class UpdateUserUseCase
 
         } catch (error) 
         {
-          throw new Error(UserMessages.ERROR.ERROR_CREATE);
+          throw new Error(UserMessages.ERROR.ERROR_UPDATE);
         }
     }    
 }
