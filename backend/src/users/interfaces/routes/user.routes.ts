@@ -12,6 +12,7 @@ export const userRouter = (controller: UserController) =>
 
     router.get('/users',Pagination,(req, res, next) => (controller.listUser(req, res, next)));
     router.post('/user',validateData(UserSchema),(req, res, next) => (controller.create(req, res,next)));
+    router.put('/user',controller.update.bind(controller));
 
     return router;
 }

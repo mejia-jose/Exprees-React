@@ -16,5 +16,6 @@ export const UserMessages =
      USER_CREATE: 'El usuario se ha creado correctamente.',
      USERS_FOUND: 'Listado de usuarios obtenido exitosamente.',
      NO_INFORMATION: 'No se encontraron usuarios registrados.',
+     USER_UPDATE: 'La información del usuario fue actualizada correctamente.',
    }
 }
