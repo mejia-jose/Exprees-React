@@ -32,7 +32,8 @@ export class UpdateUserUseCase
 
         } catch (error) 
         {
-          throw new Error(UserMessages.ERROR.ERROR_UPDATE);
+           const message = error instanceof Error ? error.message: UserMessages.ERROR.ERROR_UPDATE;
+           throw new Error(message);
         }
     }    
 }

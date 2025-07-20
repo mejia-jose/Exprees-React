@@ -7,6 +7,7 @@ import { UpdateUserUseCase } from "./users/application/use_cases/update-user.use
 import { DeleteUserUseCase } from "./users/application/use_cases/delete-user.usecase";
 import { UserController } from "./users/interfaces/controllers/user.controller";
 import { userRouter } from "./users/interfaces/routes/user.routes";
+import { captureGeneralError } from "./users/interfaces/middlewares/error.middleware";
 
 const app = express()
 app.use(express.json());
@@ -33,6 +34,7 @@ const userController = new UserController(
 const userRoutes = userRouter(userController);
 
 app.use('/api',userRoutes);
+app.use(captureGeneralError);
 
 app.listen(port, () => {
   console.log(`Aplicación corriendo en el puerto: ${port}`)

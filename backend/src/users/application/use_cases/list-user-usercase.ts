@@ -17,7 +17,8 @@ export class ListUserUseCase
 
         } catch (error:any) 
         {    
-          throw new Error(UserMessages.ERROR.ERROR_OPERATION_LIST_USERS);
+          const message = error instanceof Error ? error.message: UserMessages.ERROR.ERROR_OPERATION_LIST_USERS;
+          throw new Error(message);
         }
     }
 }

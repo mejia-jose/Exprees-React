@@ -20,7 +20,8 @@ export class DeleteUserUseCase
 
         }catch(error)
         {
-            throw new Error(UserMessages.ERROR.ERROR_DELETE);
+            const message = error instanceof Error ? error.message: UserMessages.ERROR.ERROR_DELETE;
+            throw new Error(message);
         }
     }
 }

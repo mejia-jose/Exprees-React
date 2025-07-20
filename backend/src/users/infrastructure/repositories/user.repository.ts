@@ -65,4 +65,17 @@ export class UserRepository implements IUserRepository
         this.users.delete(id);
         return userExists;
     }
+
+    /**Permite buscar un usuario por medio del username **/
+    async findUserByUserName(username:string):Promise<boolean>
+    {
+        for(const user of this.users.values())
+        {
+            if(user.username === username)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

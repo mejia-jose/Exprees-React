@@ -9,4 +9,5 @@ export interface IUserRepository
     findById(id:string):Promise<UserEntity | null>;
     listAll(pageNumber:number,pageElements:number):Promise<UserEntity[]>;
     countAll(): Promise<number>;
+    findUserByUserName(username:string):Promise<boolean>;
 }

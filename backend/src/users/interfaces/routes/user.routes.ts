@@ -13,7 +13,7 @@ export const userRouter = (controller: UserController) =>
     router.get('/users',Pagination,(req, res, next) => (controller.listUser(req, res, next)));
     router.post('/user',validateData(UserSchema),(req, res, next) => (controller.create(req, res,next)));
     router.put('/user',controller.update.bind(controller));
-    router.delete('/user', controller.delete.bind(controller));
+    router.delete('/user/:id', controller.delete.bind(controller));
 
     return router;
 }

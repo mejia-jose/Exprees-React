@@ -10,7 +10,9 @@ export const UserMessages =
      ERROR_PAGINATION: 'Los parametrós de paginación deben ser mayores a 0.',
      ID_IS_REQUIRED: 'El ID del usuario no es válido, por favor proporcione un ID válido.',
      ERROR_UPDATE: 'Ha ocurrido un error y no ha sido posible actualizar la información del usuario.',
-     ERROR_DELETE: 'Ha ocurrido un error y no ha sido posible eliminar la información del usuario.'
+     ERROR_DELETE: 'Ha ocurrido un error y no ha sido posible eliminar la información del usuario.',
+     ERROR_USERNAME_EXIST: 'El nombre de usuario ya se encuentra asociado a otra persona.',
+     ERROR_AGE: 'La idea ingresada no coincide con la fecha de nacimiento.'
    },
 
    SUCCESS:
