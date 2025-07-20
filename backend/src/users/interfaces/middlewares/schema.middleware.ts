@@ -6,5 +6,5 @@ export const UserSchema = Joi.object({
   username: Joi.string().required(),
   birthday: Joi.date().required(),
   hasPassport: Joi.boolean().required(),
-  age: Joi.number().required()
+  age: Joi.number().min(1).required()
 });

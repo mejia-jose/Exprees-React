@@ -4,13 +4,18 @@ export class MapResponse
     static ResultJson<T>(info: IMapResponse<T>)
     {
         const { type, messages, error, data } = info;
-        return {
+        const response: any = {
             success: type,
             messages: messages, 
-            detail: { 
+        };
+
+        if(data || error)
+        {
+            response.detail = { 
                 error: error ?? null,
                 data : data ?? [] 
             }
-        };
+        }
+        return response;
     }
 }
