@@ -6,6 +6,7 @@ export const UserMessages =
      ERROR_CREATE: 'Ha ocurrido un error y no ha sido posible guardar la información del usuario.',
      ERROR_OPERATION_SAVE: 'Error en la operación save: ',
      ERROR_OPERATION_LIST_USERS: 'Ha ocurrido un error y no fue posible obtener el listado de usuarios.',
+     ERROR_GENERAL: 'Errores de validación:',
    },
 
    SUCCESS:

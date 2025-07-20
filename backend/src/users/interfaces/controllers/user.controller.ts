@@ -9,8 +9,8 @@ import { MapResponse } from "../../../shared/responses/response";
 export class UserController
 {
     constructor(
-        private readonly createUserUseCase: CreateUserUseCase,
-        private readonly listUserUseCase : ListUserUseCase
+        private createUserUseCase: CreateUserUseCase,
+        private listUserUseCase : ListUserUseCase
     )
     {}
 
@@ -21,8 +21,10 @@ export class UserController
        {
           const { page, limit} = req.query;
           const pageNumber = parseInt(page as string) || 1;
-          const pageElements = parseInt(limit as string) || 10
+          const pageElements = parseInt(limit as string) || 10;
+          console.log(pageNumber+' => '+pageElements);
           const result = await this.listUserUseCase.getUsers(pageNumber,pageElements);
+          console.log(result);
 
           if(!result)
           {

@@ -3,16 +3,16 @@ import { IUserRepository } from "../../domain/ports/user.repository.interface";
 
 export class ListUserUseCase
 {
-    constructor(private readonly userRepo: IUserRepository){}
+    constructor(private readonly userRepository: IUserRepository){}
 
     /**Permite obtener el listado de usuarios **/
     async getUsers(pageNumber: number, pageElements: number)
     {
         try 
         {
-            const users = await this.userRepo.listAll(pageNumber, pageElements);
+            const users = await this.userRepository.listAll(pageNumber, pageElements);
+            const total = await this.userRepository.countAll();
 
-            const total = await this.userRepo.countAll();
             return { records: users, total, pageNumber,pageElements };
 
         } catch (error:any) 

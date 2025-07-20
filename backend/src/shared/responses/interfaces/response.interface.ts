@@ -3,6 +3,6 @@ export interface IMapResponse<T>
 {
  type:boolean;
  messages: string;
- error?: string;
+ error?: string | string[];
  data?: T | T[] ;
 }
