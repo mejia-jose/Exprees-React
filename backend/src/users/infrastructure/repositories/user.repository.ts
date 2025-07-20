@@ -33,7 +33,7 @@ export class UserRepository implements IUserRepository
         this.users.set(user.id, user);
         if(!this.users.has(user.id))
         {
-        throw new Error(UserMessages.ERROR.ERROR_CREATE);
+            throw new Error(UserMessages.ERROR.ERROR_CREATE);
         }
 
         return user;

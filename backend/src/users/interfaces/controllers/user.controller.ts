@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { CreateUserUseCase } from "../../application/use_cases/create-user.usecase";
 import { ListUserUseCase } from "../../application/use_cases/list-user-usercase";
 import { UpdateUserUseCase } from "../../application/use_cases/update-user.usecase";
+import { DeleteUserUseCase } from "../../application/use_cases/delete-user.usecase";
 import { UserMessages } from "../../../shared/constants/messages";
 import { MapResponse } from "../../../shared/responses/response";
 
@@ -11,7 +12,8 @@ export class UserController
     constructor(
         private createUserUseCase: CreateUserUseCase,
         private listUserUseCase : ListUserUseCase,
-        private updateUserUseCase : UpdateUserUseCase
+        private updateUserUseCase : UpdateUserUseCase,
+        private deleteUserUseCase: DeleteUserUseCase,
     )
     {}
 
@@ -54,7 +56,7 @@ export class UserController
 
             res.status(201).json(MapResponse.ResultJson({
                 type: true,
-                messages: UserMessages.SUCCESS.USER_CREATE,
+                messages: UserMessages.SUCCESS.CREATE_OK,
                 data: result
             }));
 
@@ -73,7 +75,27 @@ export class UserController
 
             res.status(200).json(MapResponse.ResultJson({
                 type: true,
-                messages: UserMessages.SUCCESS.USER_UPDATE,
+                messages: UserMessages.SUCCESS.UPDATE_OK,
+                data: result
+            }));
+
+        }catch(error: unknown)
+        {
+            next(error);
+        }
+    }
+
+    /** Permite delegar al caso de uso de eliminar el usuario y retornar la respuesta **/
+    async delete(req: Request, res:Response, next: NextFunction)
+    {
+        try
+        {
+            const id = req.params.id;
+            const result = await this.deleteUserUseCase.execute(id);
+
+            res.status(200).json(MapResponse.ResultJson({
+                type: true,
+                messages: UserMessages.SUCCESS.DELETE_OK,
                 data: result
             }));
 

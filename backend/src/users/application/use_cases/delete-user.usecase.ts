@@ -15,14 +15,7 @@ export class DeleteUserUseCase
             {
                 throw new Error(UserMessages.ERROR.ID_IS_REQUIRED);
             }
-
-            /** Se consulta y se valida que el usuario exista **/
-            const userExists = await this.userRepository.findById(id);
-            if(!userExists)
-            {
-                throw new Error(UserMessages.ERROR.NOT_FOUND);
-            }
-
+            
             return await this.userRepository.delete(id);
 
         }catch(error)
