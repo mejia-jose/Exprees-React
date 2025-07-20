@@ -3,7 +3,7 @@ import { v4 as uuidv4} from 'uuid';
 export class UserEntity
 {
     public readonly id: string;
-    private readonly registeredAt: Date;
+    public readonly registeredAt: Date;
 
     constructor(
       public name: string,

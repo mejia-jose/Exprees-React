@@ -7,3 +7,9 @@ export interface CreateUserDTO
     hasPassport: boolean;
     age: number;
 }
+
+export interface UpdateUserDTO extends CreateUserDTO
+{
+  id: string;
+  registeredAt: Date;
+}

@@ -42,12 +42,6 @@ export class UserRepository implements IUserRepository
     /** Permite actualizar la información de un usuario **/
     async update(user: UserEntity): Promise<UserEntity> 
     {
-        const userExists = await this.findById(user.id);
-        if(!userExists)
-        {
-            throw new Error(UserMessages.ERROR.NOT_FOUND);
-        }
-
         this.users.set(user.id, user);
         return user;
     }

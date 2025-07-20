@@ -8,6 +8,7 @@ export const UserMessages =
      ERROR_OPERATION_LIST_USERS: 'Ha ocurrido un error y no fue posible obtener el listado de usuarios.',
      ERROR_GENERAL: 'Errores de validación:',
      ERROR_PAGINATION: 'Los parametrós de paginación deben ser mayores a 0.',
+     ID_IS_REQUIRED: 'El ID del usuario no es válido, por favor proporcione un ID válido.',
    },
 
    SUCCESS:
