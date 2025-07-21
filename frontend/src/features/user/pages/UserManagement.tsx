@@ -1,4 +1,6 @@
 import { Container,Button,Box } from '@mui/material';
+import AddBoxIcon from '@mui/icons-material/AddBox';
+
 import DataTable from '../components/DataTable';
 import Titles from '../components/Titles';
 
@@ -13,7 +15,7 @@ function UserManagement() {
         <Button
           variant="contained"
           color="primary"
-          /* startIcon:{ } */
+          startIcon={<AddBoxIcon/> }
           sx={{ float: 'right', mb:2 }}
         >
           Añadir nuevo usuario

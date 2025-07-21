@@ -1,6 +1,8 @@
-import { DataGrid, type GridColDef } from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem, type GridColDef } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import moment from 'moment';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import { useGetUsers } from '../hooks/get-users.hooks';
 import Loanding from '../components/Loanding';
@@ -19,7 +21,19 @@ const columns: GridColDef[] = [
   { field: 'registeredAt',headerName: 'Registered at',width: 180, type:'dateTime',
     valueGetter: (value) => new Date(value),
   },
-  { field: 'actions', headerName: 'Actions', width: 80,}
+  { field: 'actions', headerName: 'Actions', width: 80, type: 'actions',
+    getActions: (params) =>
+    [
+      <GridActionsCellItem
+       icon={ <EditIcon/>}
+       label='Edit'
+       />,
+      <GridActionsCellItem
+       icon={ <DeleteIcon/>}
+       label='Delete'
+       />
+    ]
+  }
 ];
 
 export default function DataTable() {
@@ -34,7 +48,7 @@ export default function DataTable() {
   }
 
   return (
-    <Paper sx={{ height: 480, width: '100%' }}>
+    <Paper sx={{ height: 480, width: '100%', overflowX: 'auto' }}>
       <DataGrid
         rows={records}
         columns={columns}
