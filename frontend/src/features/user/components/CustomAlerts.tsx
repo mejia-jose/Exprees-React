@@ -1,11 +1,6 @@
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
-
-interface IPropsAlert
-{
-    type: 'success' | 'error' | undefined;
-    text : string | undefined;
-}
+import type { IPropsAlert } from '../types/components/alert.type';
 
 const CustomAlerts: React.FC<IPropsAlert> = ({type, text}) => {
   return (

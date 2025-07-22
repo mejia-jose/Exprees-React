@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { type IResponseDataUser } from "../types/user.interface";
+import { type IResponseDataUser } from "../types/services/user.interface";
 
 /** Permite obtener el listado de usuarios */
 export async function getUsers():Promise<IResponseDataUser[]>
