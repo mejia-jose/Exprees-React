@@ -1,12 +1,6 @@
-import {  Typography, type TypographyProps } from '@mui/material';
+import {  Typography } from '@mui/material';
+import type { ITitleProps } from '../types/components/titles.type';
 
-export type ITitleProps =
-{
-   text: string;
-   variant?: TypographyProps['variant'];
-   component?: TypographyProps['component'];
-   color?: TypographyProps['color']
-}
 export default function Titles({ text, variant='h4', component='h1', color }: ITitleProps)
 {
     return(

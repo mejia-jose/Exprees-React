@@ -94,7 +94,6 @@ export default function DataTable() {
       <DataGrid
         rows={records}
         columns={columns}
-        /* disableColumnMenu */
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10]}
         /* checkboxSelection */
@@ -108,7 +107,7 @@ export default function DataTable() {
             title='¿Estás seguro de eliminar este usuario?'
             color ='error'
             nameButton = 'Eliminar'
-            confirmDelete={ () =>{
+            action={ () =>{
               if(idUser){ deleteUser(idUser); }
                 setOpenModalDetete(false);
               }
