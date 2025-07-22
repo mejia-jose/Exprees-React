@@ -13,9 +13,9 @@ export class CreateUserUseCase
     {
         try
         {
-            const { name, lastname,username, hasPassport, birthday, age} = user;
+            const { name, lastname,username, hasPassport, birthdate, age} = user;
             
-            if(!this.calculateAge(birthday,age))
+            if(!this.calculateAge(birthdate,age))
             {
                 throw new Error(UserMessages.ERROR.ERROR_AGE);
             }
@@ -27,7 +27,7 @@ export class CreateUserUseCase
                throw new Error(UserMessages.ERROR.ERROR_USERNAME_EXIST);
             }
 
-            const userInstances = new UserEntity(name,lastname,username,birthday,hasPassport,age);
+            const userInstances = new UserEntity(name,lastname,username,birthdate,hasPassport,age);
             return await this.userRepository.save(userInstances);
             
         } catch (error) 
@@ -38,9 +38,9 @@ export class CreateUserUseCase
     }
 
     /** Permite calcular la edad del usuario por medio de la fecha de naciemineto **/
-    private calculateAge(birthday: string | Date, age:number)
+    private calculateAge(birthdate: string | Date, age:number)
     {
-       const birth = new Date(birthday);  
+       const birth = new Date(birthdate);  
        const currentDate = new Date();
 
        let diffYear = currentDate.getFullYear() - birth.getFullYear();

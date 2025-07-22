@@ -1,12 +1,16 @@
+import React, { useState } from 'react';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { useRef, useState } from 'react';
 import { FormControlLabel, Stack, Box, TextField, Checkbox } from '@mui/material';
-import type { IUseStateForm } from '../types/components/form.type';
 
-export default function Form() {
+import type { FormProps, IUseStateForm } from '../types/components/form.type';
+import { createUser } from '../services/create-user.service';
+import moment from 'moment';
 
+const Form = React.forwardRef<HTMLFormElement,FormProps>(({type, onSuccess, onError}, ref) => {
+
+    /** Permite manejar el estado del formulario */
     const [formData, setFormData] = useState<IUseStateForm>({
         name: '',
         lastname: '',
@@ -14,17 +18,47 @@ export default function Form() {
         birthdate: null,
         hasPassport: false,
         age: 0
-    });
+    });  
 
-    const formRef = useRef(null);
-    
+    const [formError, setFormError] = useState('');
+
+    /**Permite consumir el servcio que envia la información del usuario a la api y registrarla **/
+    const saveUser = async (event: React.FormEvent<HTMLFormElement>) =>
+    {
+        event.preventDefault();
+        const newFormData = { ...formData, birthdate: formatDate(formData.birthdate) };
+        const result = await createUser(newFormData);
+        
+        if(result.success)
+        {
+            if (onSuccess && result?.messages) {
+                onSuccess(result.messages);
+            }
+        }else
+        {
+            if (onError && result?.messages) {
+                onError(result.messages);
+            }
+        }
+    }
+
+    const formatDate = (date:moment.Moment | null) =>
+    {
+       return moment(date).format('YYYY-MM-DD');
+    }
+
+    const updateUser = () =>
+    {
+
+    }
     return (
         <Box
             component="form"
             sx={{ '& .MuiTextField-root': { m: 1, width: '60ch' } }}
             noValidate
             autoComplete="off"
-            ref={formRef}
+            ref={ref}
+            onSubmit={ type === 'save' ? saveUser : updateUser }
         >
             <Stack spacing={2}>
                 <TextField
@@ -52,7 +86,6 @@ export default function Form() {
                     <DatePicker sx={{ width:'97%', p:1}}
                         label="Fecha de nacimiento"
                         value={ formData.birthdate }
-                        
                         onChange={(newValue) => setFormData({ ...formData, birthdate: newValue})}
                     />
                 </LocalizationProvider>
@@ -75,4 +108,6 @@ export default function Form() {
             </Stack>
         </Box>
     );
-}
+});
+
+export default Form;

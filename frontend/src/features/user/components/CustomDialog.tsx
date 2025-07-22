@@ -1,5 +1,5 @@
 import Button from '@mui/material/Button';
-import Dialog, { type DialogProps } from '@mui/material/Dialog';
+import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import type { IPropsDialog } from '../types/components/dialog.type';
 import Form from './Form';
 
-export const CustomDialog: React.FC<IPropsDialog> = ({openModal, close, action ,nameButton, color, title,fullWidth}) =>
+export const CustomDialog: React.FC<IPropsDialog> = ({openModal, close, action ,nameButton, color, title,fullWidth, formRef, onSuccess, onError}) =>
 {
    const theme = useTheme();
    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -22,11 +22,9 @@ export const CustomDialog: React.FC<IPropsDialog> = ({openModal, close, action ,
       }}>
         <DialogTitle>{ title } </DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            {
-               nameButton === 'Guardar' &&( <Form />)
+           {
+               nameButton === 'Guardar' &&( <Form ref={formRef} type="save" onSuccess={onSuccess} onError={onError}/>)
             }
-          </DialogContentText>
         </DialogContent>
         <DialogActions>
             <Button onClick={close}>Cancelar</Button>

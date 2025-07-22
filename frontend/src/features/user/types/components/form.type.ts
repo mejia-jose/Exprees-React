@@ -9,3 +9,9 @@ export interface IUseStateForm
     hasPassport: boolean;
     age: number;
 }
+
+export type FormProps = {
+  type: 'save' | 'update';
+  onSuccess?: (msg: string) => void;
+  onError?: (msg: string) => void;
+};

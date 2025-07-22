@@ -12,7 +12,7 @@ export const UserMessages =
      ERROR_UPDATE: 'Ha ocurrido un error y no ha sido posible actualizar la información del usuario.',
      ERROR_DELETE: 'Ha ocurrido un error y no ha sido posible eliminar la información del usuario.',
      ERROR_USERNAME_EXIST: 'El nombre de usuario ya se encuentra asociado a otra persona.',
-     ERROR_AGE: 'La idea ingresada no coincide con la fecha de nacimiento.'
+     ERROR_AGE: 'La edad ingresada no coincide con la fecha de nacimiento.'
    },
 
    SUCCESS:

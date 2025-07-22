@@ -6,7 +6,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import { useGetUsers } from '../hooks/get-users.hooks';
 import Loanding from '../components/Loanding';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CustomDialog } from './CustomDialog';
 import { deleteUserByID } from '../services/delete-user.service';
 import CustomAlerts from './CustomAlerts';
@@ -14,7 +14,7 @@ import { Box } from '@mui/material';
 
 moment.locale('es');
 
-export default function DataTable() {
+const DataTable: React.FC<{refresh: boolean}> = ({ refresh }) => {
 
   /**Se definen las columnas de la tabla **/
   const columns: GridColDef[] = [
@@ -65,6 +65,12 @@ export default function DataTable() {
     setOpenModalDetete(true);
     setIdUser(id);
   };
+
+  useEffect(() => {
+    if (refresh) {
+      refetch();
+    }
+  }, [refresh]);
 
   /** Permite realizar el llamado al método que realiza la peticioon del eliminar usuario al backend **/
   const deleteUser = async (idUser: string) =>
@@ -119,3 +125,4 @@ export default function DataTable() {
     </Paper>
   );
 }
+export default DataTable;
