@@ -8,15 +8,15 @@ import Titles from '../components/Titles';
 function UserManagement() {
  
   return (
-    <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+    <Container maxWidth="xl" sx={{ mt: 2, mb: 1 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
         <Titles text='Gestión de usuarios'/>
         
         <Button
           variant="contained"
           color="primary"
           startIcon={<AddBoxIcon/> }
-          sx={{ float: 'right', mb:2 }}
+          sx={{ float: 'right', mb:2,minWidth:200 }}
         >
           Añadir nuevo usuario
         </Button>
@@ -24,7 +24,6 @@ function UserManagement() {
 
       <DataTable/> 
     </Container>
-
   );
 }
 

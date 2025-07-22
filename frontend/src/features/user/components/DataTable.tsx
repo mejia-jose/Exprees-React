@@ -6,41 +6,80 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 import { useGetUsers } from '../hooks/get-users.hooks';
 import Loanding from '../components/Loanding';
+import { useState } from 'react';
+import { CustomDialog } from './CustomDialog';
+import { deleteUserByID } from '../services/delete-user.service';
+import CustomAlerts from './CustomAlerts';
+import { Box } from '@mui/material';
 
 moment.locale('es');
 
-const columns: GridColDef[] = [
-  { field: 'name', headerName: 'Name', width: 130 },
-  { field: 'lastname', headerName: 'Last name', width: 130 },
-  { field: 'username', headerName: 'User name', width: 150 },
-  { field: 'birthday', headerName: 'Birthday', width: 130, type:'string',
-    valueGetter: (value) => moment(value).format('LL'),
-  },
-  { field: 'hasPassport', headerName: 'Has Passport', width: 150, type:'boolean' },
-  { field: 'age', headerName: 'Age',type: 'number',width: 40 },
-  { field: 'registeredAt',headerName: 'Registered at',width: 180, type:'dateTime',
-    valueGetter: (value) => new Date(value),
-  },
-  { field: 'actions', headerName: 'Actions', width: 80, type: 'actions',
-    getActions: (params) =>
-    [
-      <GridActionsCellItem
-       icon={ <EditIcon/>}
-       label='Edit'
-       />,
-      <GridActionsCellItem
-       icon={ <DeleteIcon/>}
-       label='Delete'
-       />
-    ]
-  }
-];
-
 export default function DataTable() {
 
-  const {users, loanding} = useGetUsers();
-  const { total, pageNumber,pageElements, records } = users;
+  /**Se definen las columnas de la tabla **/
+  const columns: GridColDef[] = [
+    { field: 'name', headerName: 'Nombre', flex:1, minWidth: 150,},
+    { field: 'lastname', headerName: 'Apellidos', flex:1, minWidth: 150 },
+    { field: 'username', headerName: 'Nombre de usuario', flex:1, minWidth: 150 },
+    { field: 'birthday', headerName: 'Fecha de nacimiento', flex:1, minWidth: 150, type:'string',
+      valueGetter: (value) => moment(value).format('LL'),
+    },
+    { field: 'hasPassport', headerName: '¿Tiene pasaporte?', flex:1, minWidth: 150, type:'boolean' },
+    { field: 'age', headerName: 'Edad',type: 'number',flex:1, minWidth: 40,align:'center' },
+    { field: 'registeredAt',headerName: 'Registrado en',flex:1, minWidth: 150, type:'dateTime',
+      valueGetter: (value) => new Date(value),
+    },
+    { field: 'actions', headerName: 'Acciones', flex:1, minWidth: 100, type: 'actions',align:'center',
+      getActions: (params) =>
+      [
+        <GridActionsCellItem
+          icon={ <EditIcon/>}
+          label='Edit'
+          color="primary"
+        />,
+        <GridActionsCellItem
+          icon={ <DeleteIcon/>}
+          label='Delete'
+          color="inherit"
+          onClick={ () => openModalConfirmDelete(params.row.id) }
+        />
+      ]
+    }
+  ];
+
+  /** Estado del modal de eliminar usuario **/
+  const [openModalDelete, setOpenModalDetete] = useState<boolean>(false);
+  const [idUser, setIdUser] = useState<string>('');
+
+  /** Maneja el estado de las alertas **/
+  const [alert, setAlert] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+
+  /** Hook para el listado de usuarios **/
+  const {users, loanding, refetch} = useGetUsers();
+  const { pageNumber,pageElements, records } = users;
   const paginationModel = { page: pageNumber, pageSize: pageElements };
+
+  /** Permite abrir el modal de eliminar usuario **/
+  const openModalConfirmDelete = (id: string) =>
+  {
+    setOpenModalDetete(true);
+    setIdUser(id);
+  };
+
+  /** Permite realizar el llamado al método que realiza la peticioon del eliminar usuario al backend **/
+  const deleteUser = async (idUser: string) =>
+  {
+    const result = await deleteUserByID(idUser);
+    if(result) 
+    {
+      setAlert({ type: "success", text: "El usuario se ha eliminado correctamente" });
+      refetch();
+    } else {
+      setAlert({ type: "error", text: "No se pudo eliminar el usuario" });
+    }
+
+    setTimeout(() => {setAlert(null)}, 5000);
+  }
 
   if(loanding)
   {
@@ -48,15 +87,36 @@ export default function DataTable() {
   }
 
   return (
-    <Paper sx={{ height: 480, width: '100%', overflowX: 'auto' }}>
+    <Paper sx={{ height: 'auto',  overflowX: 'auto' }}>
+     <Box sx={{ minWidth: 600 }}>
+      { alert && <CustomAlerts type={alert?.type} text={alert?.text} /> }
+
       <DataGrid
         rows={records}
         columns={columns}
+        /* disableColumnMenu */
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5, 10]}
         /* checkboxSelection */
         sx={{ border: 0 }}
       />
+
+      { openModalDelete && (
+          <CustomDialog
+            openModal={openModalDelete}
+            close={ () => setOpenModalDetete(false)}
+            title='¿Estás seguro de eliminar este usuario?'
+            color ='error'
+            nameButton = 'Eliminar'
+            confirmDelete={ () =>{
+              if(idUser){ deleteUser(idUser); }
+                setOpenModalDetete(false);
+              }
+            }
+          />
+        )
+      }
+      </Box>
     </Paper>
   );
 }

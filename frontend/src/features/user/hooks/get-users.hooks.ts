@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 import { getUsers} from '../services/get-user.service';
 import { type IResponseDataUser } from "../types/user.interface";
@@ -9,15 +9,23 @@ export function useGetUsers()
     const [loanding, setLoanding] = useState<boolean>(true);
     const [error, setError] = useState<unknown>(null);
 
-    useEffect(() =>
+    const refetch = useCallback(() =>
     {
+       setLoanding(true);
        getUsers().
-       then(setApiResponse).
+       then((data) =>{
+            setApiResponse(data);
+       }).
        catch(setError).
        finally(() => setLoanding(false));
     }, []);
 
+    useEffect(() =>
+    {
+      refetch();
+    }, [refetch]);
+
     const { detail } = apiResponse;
     const users = detail?.data || [];
-    return { users, loanding, error};
+    return { users, loanding, error, refetch};
 }

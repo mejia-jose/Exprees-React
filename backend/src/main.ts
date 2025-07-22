@@ -1,4 +1,5 @@
 import express  from "express";
+import cors from "cors";
 
 import { UserRepository } from "./users/infrastructure/repositories/user.repository";
 import { CreateUserUseCase } from "./users/application/use_cases/create-user.usecase";
@@ -10,6 +11,7 @@ import { userRouter } from "./users/interfaces/routes/user.routes";
 import { captureGeneralError } from "./users/interfaces/middlewares/error.middleware";
 
 const app = express()
+app.use(cors());
 app.use(express.json());
 const port = 3000;
 
