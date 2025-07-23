@@ -25,6 +25,7 @@ const Form = React.forwardRef<HTMLFormElement,FormProps>(({type, onSuccess, onEr
 
     /** Permite manejar el estado del formulario */
     const [formData, setFormData] = useState<IUserFormPropierties>(InitialStateForm);  
+    const [error, setError] = useState<IUserFormPropierties>(InitialStateForm);
 
     /** Se setean los campos en el formulario cuando es edición **/
     useEffect(() =>
@@ -53,21 +54,59 @@ const Form = React.forwardRef<HTMLFormElement,FormProps>(({type, onSuccess, onEr
     const saveUser = async (event: React.FormEvent<HTMLFormElement>) =>
     {
         event.preventDefault();
-        const newFormData = { ...formData, birthdate: formatDate(formData.birthdate) };
-        const { id, ...payload } = newFormData;
-        const result = await createUser(payload);
-        
-        if(result.success)
-        {
-            if (onSuccess && result?.messages) {
-                onSuccess(result.messages);
+        if (validateData())
+        { 
+            const newFormData = { ...formData, birthdate: formatDate(formData.birthdate) };
+            const { id, ...payload } = newFormData;
+            const result = await createUser(payload);
+            
+            if(result.success)
+            {
+                if (onSuccess && result?.messages) {
+                    onSuccess(result.messages);
+                }
+            }else
+            {
+                if (onError && result?.messages) {
+                    onError(result.messages);
+                }
             }
-        }else
+        }   
+    }
+
+    /** Permite realizar una validación manual de los campos del formulario **/
+    const validateData = () =>
+    {
+        const {name,lastname,birthdate,age,username} = formData;
+        let formErrors: any = {};
+
+        if(!name || name.length < 3)
         {
-            if (onError && result?.messages) {
-                onError(result.messages);
-            }
+            formErrors.name = "El nombre es requerido y debe tener minimo dos(2) letras.";
         }
+
+        if(!lastname)
+        {
+            formErrors.lastname = "El apellido es requerido.";
+        }
+
+        if(!username)
+        {
+            formErrors.username = "El nombre de usuario es requerido.";
+        }
+
+        if(!birthdate)
+        {
+            formErrors.birthdate = "La fecha de nacimiento es requerida.";
+        }
+
+        if(!age || Number(age) <= 0)
+        {
+            formErrors.age = "La edad es requerida y debe ser mayor a 0.";
+        }
+
+        setError(formErrors);
+        return Object.keys(formErrors).length === 0;
     }
 
     const formatDate = (date:moment.Moment | null) =>
@@ -129,15 +168,18 @@ const Form = React.forwardRef<HTMLFormElement,FormProps>(({type, onSuccess, onEr
                     id="name"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    error={Boolean(error.name)}
+                    helperText={error.name}
                 />
                  
-                
                 <TextField
                     fullWidth
                     label="Apellidos"
                     id="lastname"
                     value={formData.lastname}
                     onChange={(e) => setFormData({ ...formData, lastname: e.target.value })}
+                    error={Boolean(error.lastname)}
+                    helperText={error.lastname}
                 />
                 <TextField
                     fullWidth
@@ -145,6 +187,8 @@ const Form = React.forwardRef<HTMLFormElement,FormProps>(({type, onSuccess, onEr
                     id="username"
                     value={formData.username}
                     onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                    error={Boolean(error.username)}
+                    helperText={error.username}
                 />
                 <LocalizationProvider dateAdapter={AdapterMoment}>
                     <DatePicker sx={{ width:'100%'}}
@@ -172,9 +216,10 @@ const Form = React.forwardRef<HTMLFormElement,FormProps>(({type, onSuccess, onEr
                     fullWidth
                     label="Edad"
                     disabled
-                    id="age"
                     value={formData.age}
                     onChange={(e) => setFormData({ ...formData, age: Number(e.target.value) })}
+                    error={Boolean(error.age)}
+                    helperText={error.age}
                 />
             </Grid>
         </Box>

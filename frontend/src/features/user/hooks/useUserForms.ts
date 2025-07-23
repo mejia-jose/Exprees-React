@@ -3,7 +3,7 @@ import type { IUserPropierties } from "../types/services/user.interface";
 
 export const useUserForms = () =>
 {
-     /** Manejo de estados del modal */
+  /** Manejo de estados del modal */
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [fullWidth, setFullWidth] = useState<boolean>(false);
   const [modalType, setModalType] = useState<'add' | 'edit' | null>(null)
@@ -28,7 +28,7 @@ export const useUserForms = () =>
     if (user) setUserEdit(user);
   }, []);
 
-  
+  /** Permite manejar el estado de las respuestas existosas de los endpoint, y notificar al componente padre para mostrar mensaje de exito */
   const requestSuccess = (msg: string) =>
   {
     setOpenModal(false);
