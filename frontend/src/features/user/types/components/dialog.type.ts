@@ -1,3 +1,5 @@
+import type { IUserPropierties } from "../services/user.interface";
+
 export interface IPropsDialog
 {
     openModal: boolean;
@@ -11,4 +13,5 @@ export interface IPropsDialog
     formRef?: React.RefObject<HTMLFormElement | null>;
     onSuccess?: (msg: string) => void;
     onError?: (msg: string) => void;
+    userEdit?: IUserPropierties | null;
 }

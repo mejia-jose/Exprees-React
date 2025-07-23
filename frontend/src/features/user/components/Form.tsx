@@ -1,31 +1,61 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { FormControlLabel, Stack, Box, TextField, Checkbox } from '@mui/material';
+import Grid from '@mui/material/Grid';
 
-import type { FormProps, IUseStateForm } from '../types/components/form.type';
+import type { FormProps, IUserFormPropierties} from '../types/components/form.type';
 import { createUser } from '../services/create-user.service';
+import { updateDataUser } from '../services/update-user.service';
 
-const Form = React.forwardRef<HTMLFormElement,FormProps>(({type, onSuccess, onError}, ref) => {
+const InitialStateForm : IUserFormPropierties =
+{
+  id: '',
+  name: '',
+  lastname: '',
+  username: '',
+  birthdate: null,
+  hasPassport: false,
+  age: 0,
+}
+
+const Form = React.forwardRef<HTMLFormElement,FormProps>(({type, onSuccess, onError, userEdit}, ref) => {
 
     /** Permite manejar el estado del formulario */
-    const [formData, setFormData] = useState<IUseStateForm>({
-        name: '',
-        lastname: '',
-        username: '',
-        birthdate: null,
-        hasPassport: false,
-        age: 0
-    });  
+    const [formData, setFormData] = useState<IUserFormPropierties>(InitialStateForm);  
+
+    /** Se setean los campos en el formulario cuando es edición **/
+    useEffect(() =>
+    {
+        if(userEdit && userEdit.id && type === 'update')
+        {
+            const user = 
+            {
+                id: userEdit.id,
+                name: userEdit.name,
+                lastname: userEdit.lastname,
+                username: userEdit.username,
+                birthdate: moment(userEdit.birthday),
+                hasPassport: userEdit.hasPassport,
+                age: userEdit.age
+            }
+            setFormData(user)
+        }else
+        {
+            setFormData(InitialStateForm)
+        }
+    }, [userEdit]);
+    
 
     /**Permite consumir el servicio que envia la información del usuario a la api y registrarla **/
     const saveUser = async (event: React.FormEvent<HTMLFormElement>) =>
     {
         event.preventDefault();
         const newFormData = { ...formData, birthdate: formatDate(formData.birthdate) };
-        const result = await createUser(newFormData);
+        const { id, ...payload } = newFormData;
+        const result = await createUser(payload);
         
         if(result.success)
         {
@@ -45,20 +75,54 @@ const Form = React.forwardRef<HTMLFormElement,FormProps>(({type, onSuccess, onEr
        return moment(date).format('YYYY-MM-DD');
     }
 
-    const updateUser = () =>
+    /** Permite calcular la edad en base a la fecha de nacimiento **/
+    const calculateAge = (birthdate: string) =>
     {
+       const birth = new Date(birthdate);  
+        const currentDate = new Date();
 
+        let age = currentDate.getFullYear() - birth.getFullYear();
+        const monthDiff = currentDate.getMonth() - birth.getMonth();
+        const dayDiff = currentDate.getDate() - birth.getDate();
+
+        if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+            age--;
+        }
+
+        return age;
     }
+
+    /**Permite consumir el servicio que envia la información del usuario a la api y actualizarla **/
+    const updateUser = async (event: React.FormEvent<HTMLFormElement>) =>
+    {
+        event.preventDefault();
+        const updateFormData = { ...formData, birthdate: formatDate(formData.birthdate) };
+        const update = await updateDataUser(updateFormData);
+        
+        if(update.success)
+        {
+            if (onSuccess && update?.messages) {
+                onSuccess(update.messages);
+            }
+        }else
+        {
+            if (onError && update?.messages) {
+                onError(update.messages);
+            }
+        }
+    }
+
     return (
         <Box
             component="form"
-            sx={{ '& .MuiTextField-root': { m: 1, width: '60ch' } }}
+            sx={{ width: '100%' }}
             noValidate
             autoComplete="off"
             ref={ref}
             onSubmit={ type === 'save' ? saveUser : updateUser }
         >
-            <Stack spacing={2}>
+            <Grid container spacing={2}>
+
                 <TextField
                     fullWidth
                     label="Nombre"
@@ -66,6 +130,8 @@ const Form = React.forwardRef<HTMLFormElement,FormProps>(({type, onSuccess, onEr
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                 />
+                 
+                
                 <TextField
                     fullWidth
                     label="Apellidos"
@@ -81,10 +147,16 @@ const Form = React.forwardRef<HTMLFormElement,FormProps>(({type, onSuccess, onEr
                     onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                 />
                 <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DatePicker sx={{ width:'97%', p:1}}
+                    <DatePicker sx={{ width:'100%'}}
                         label="Fecha de nacimiento"
                         value={ formData.birthdate }
-                        onChange={(newValue) => setFormData({ ...formData, birthdate: newValue})}
+                        onChange={(newValue) => {
+                            if (newValue) {
+                                const birthdateFormat = moment(newValue).format('YYYY-MM-DD');
+                                const age = calculateAge(birthdateFormat);
+                                setFormData({ ...formData, birthdate: newValue, age });
+                            }
+                        }}
                     />
                 </LocalizationProvider>
                 <FormControlLabel
@@ -99,11 +171,12 @@ const Form = React.forwardRef<HTMLFormElement,FormProps>(({type, onSuccess, onEr
                 <TextField
                     fullWidth
                     label="Edad"
+                    disabled
                     id="age"
                     value={formData.age}
                     onChange={(e) => setFormData({ ...formData, age: Number(e.target.value) })}
                 />
-            </Stack>
+            </Grid>
         </Box>
     );
 });

@@ -1,4 +1,4 @@
-import { Container,Button,Box } from '@mui/material';
+import { Container,Button,Box, useMediaQuery, useTheme } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import DataTable from '../components/DataTable';
@@ -20,29 +20,41 @@ function UserManagement() {
     refreshTable,
     openModalType,
     requestSuccess,
+    setRefreshTable,
     requestFailed,
-    formRef 
+    formRef,
+    userEdit
   } = useUserForms();
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
-    <Container maxWidth="xl" sx={{ mt: 2, mb: 1 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-        <Titles text='Gestión de usuarios'/>
+    <Container maxWidth="xl">
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',flexWrap: 'wrap',gap: 2,mb: 2}}>
+        <Box>
+          <Titles text='Gestión de usuarios'/>
+        </Box>
         
-        <Button
+        <Box>
+          <Button
           variant="contained"
           color="primary"
+          fullWidth={isMobile}
           startIcon={<AddBoxIcon/> }
-          sx={{ float: 'right', mb:2,minWidth:200 }}
+          sx={{ float: 'right', mb:2,minWidth:200,  backgroundColor: '#1976d2',borderRadius: '8px' }}
           onClick={ () => openModalType('add')}
         >
           Añadir nuevo usuario
         </Button>
+        </Box>
       </Box>
 
       { alert && messages && <CustomAlerts type={alert?.type} text={alert?.text} /> }
 
-      <DataTable refresh={refreshTable} onEditUser={() => openModalType('edit')}/> 
+      <Box sx={{ height: '600px', width: '100%', overflow: 'auto' }}>
+         <DataTable refresh={refreshTable} setRefreshTable={setRefreshTable} onEditUser={(userEdit) => openModalType('edit', userEdit)}/> 
+      </Box>
 
       { openModal && (
           <CustomDialog
@@ -56,6 +68,7 @@ function UserManagement() {
             formRef={formRef}
             onSuccess={requestSuccess} 
             onError={requestFailed}
+            userEdit= {userEdit}
             action={ () =>{
                 if (formRef.current) {
                   formRef.current.requestSubmit(); 

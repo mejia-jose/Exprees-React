@@ -1,8 +1,13 @@
 import { DataGrid, GridActionsCellItem, type GridColDef } from '@mui/x-data-grid';
+import { esES } from '@mui/x-data-grid/locales';
 import Paper from '@mui/material/Paper';
 import moment from 'moment';
+// @ts-ignore
+import 'moment/locale/es';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 import { useGetUsers } from '../hooks/useGetUser';
 import Loanding from '../components/Loanding';
@@ -12,35 +17,47 @@ import { deleteUserByID } from '../services/delete-user.service';
 import CustomAlerts from './CustomAlerts';
 import { Box } from '@mui/material';
 import type { DataTableProps } from '../types/components/datatable.type';
+import type { IPropsAlert } from '../types/components/alert.type';
 
 moment.locale('es');
 
-const DataTable: React.FC<DataTableProps> = ({ refresh,onEditUser }) => {
+const DataTable: React.FC<DataTableProps> = ({ refresh,onEditUser,setRefreshTable }) => {
 
   /**Se definen las columnas de la tabla **/
   const columns: GridColDef[] = [
-    { field: 'name', headerName: 'Nombre', flex:1, minWidth: 150,},
-    { field: 'lastname', headerName: 'Apellidos', flex:1, minWidth: 150 },
-    { field: 'username', headerName: 'Nombre de usuario', flex:1, minWidth: 150 },
-    { field: 'birthday', headerName: 'Fecha de nacimiento', flex:1, minWidth: 150, type:'string',
+    { field: 'name', headerName: 'Nombre', flex:1, minWidth: 150, headerClassName: 'custom-header'},
+    { field: 'lastname', headerName: 'Apellidos', flex:1, minWidth: 150, headerClassName: 'custom-header'},
+    { field: 'username', headerName: 'Nombre de usuario', flex:1, minWidth: 150, headerClassName: 'custom-header' },
+    { field: 'birthday', headerName: 'Fecha de nacimiento', flex:1, minWidth: 150, type:'string', headerClassName: 'custom-header',
       valueGetter: (value) => moment(value).format('LL'),
     },
-    { field: 'hasPassport', headerName: '¿Tiene pasaporte?', flex:1, minWidth: 150, type:'boolean' },
-    { field: 'age', headerName: 'Edad',type: 'number',flex:1, minWidth: 40,align:'center' },
-    { field: 'registeredAt',headerName: 'Registrado en',flex:1, minWidth: 150, type:'dateTime',
+    { field: 'hasPassport', headerName: '¿Tiene pasaporte?', flex:1, minWidth: 150, type:'boolean',headerClassName: 'custom-header',
+      renderCell: (params) => {
+        const value = params.value;
+        return value ? (
+          <CheckCircleIcon sx={{ color: 'green' }} />
+        ) : (
+          <CancelIcon sx={{ color: 'red' }} />
+        );
+      }
+     },
+    { field: 'age', headerName: 'Edad',type: 'number',flex:1, minWidth: 60,align:'center', headerClassName: 'custom-header',
+      valueGetter : (value) => value + ' años'
+     },
+    { field: 'registeredAt',headerName: 'Registrado el',flex:1, minWidth: 150, type:'dateTime',headerClassName: 'custom-header',
       valueGetter: (value) => new Date(value),
     },
-    { field: 'actions', headerName: 'Acciones', flex:1, minWidth: 100, type: 'actions',align:'center',
+    { field: 'actions', headerName: 'Acciones', flex:1, minWidth: 100, type: 'actions',align:'center',headerClassName: 'custom-header',
       getActions: (params) =>
       [
         <GridActionsCellItem
-          icon={ <EditIcon/>}
+          icon={ <EditIcon sx={{ color: 'blue' }}/> }
           label='Edit'
           color="primary"
           onClick={ () => onEditUser(params.row) }
         />,
         <GridActionsCellItem
-          icon={ <DeleteIcon/>}
+          icon={ <DeleteIcon sx={{ color: 'red' }}/>}
           label='Delete'
           color="inherit"
           onClick={ () => openModalConfirmDelete(params.row.id) }
@@ -54,12 +71,12 @@ const DataTable: React.FC<DataTableProps> = ({ refresh,onEditUser }) => {
   const [idUser, setIdUser] = useState<string>('');
 
   /** Maneja el estado de las alertas **/
-  const [alert, setAlert] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const [alert, setAlert] = useState<IPropsAlert | null>(null);
 
   /** Hook para el listado de usuarios **/
   const {users, loanding, refetch} = useGetUsers();
-  const {pageNumber,pageElements, records } = users;
-  const paginationModel = { page: pageNumber, pageSize: pageElements };
+  const { records } = users;
+  const paginationModel = { page: 0, pageSize: 7 };
 
   /** Permite abrir el modal de eliminar usuario **/
   const openModalConfirmDelete = (id: string) =>
@@ -71,6 +88,7 @@ const DataTable: React.FC<DataTableProps> = ({ refresh,onEditUser }) => {
   useEffect(() => {
     if (refresh) {
       refetch();
+      setRefreshTable(false);
     }
   }, [refresh]);
 
@@ -95,8 +113,8 @@ const DataTable: React.FC<DataTableProps> = ({ refresh,onEditUser }) => {
   }
 
   return (
-    <Paper sx={{ height: 'auto',  overflowX: 'auto' }}>
-     <Box sx={{ minWidth: 600 }}>
+    <Paper sx={{ height: '600px', overflow: 'auto' }}>
+     <Box>
       { alert && <CustomAlerts type={alert?.type} text={alert?.text} /> }
 
       <DataGrid
@@ -104,8 +122,16 @@ const DataTable: React.FC<DataTableProps> = ({ refresh,onEditUser }) => {
         columns={columns}
         initialState={{ pagination: { paginationModel } }}
         pageSizeOptions={[5,10.25]}
+        localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         /* checkboxSelection */
-        sx={{ border: 0 }}
+        sx={{ border: 0,width:
+      {
+        sx: 300,
+        sm: 600,
+        md: 900,
+        lg: 1200,
+        xl: 1500
+      } }}
       />
 
       { openModalDelete && (

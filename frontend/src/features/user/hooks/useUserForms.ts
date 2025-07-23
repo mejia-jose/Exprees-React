@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from "react";
+import type { IUserPropierties } from "../types/services/user.interface";
 
 export const useUserForms = () =>
 {
@@ -15,20 +16,23 @@ export const useUserForms = () =>
 
   /** Maneja el estado de las alertas **/
   const [alert, setAlert] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+
+  const [userEdit, setUserEdit] = useState<IUserPropierties | null>(null);
   
   /** Permite abrir el modal **/
-  const openModalType = useCallback((type: 'add' | 'edit') => 
+  const openModalType = useCallback((type: 'add' | 'edit', user?:IUserPropierties) => 
   {
     setModalType(type);
     setOpenModal(true);
     setFullWidth(true);
+    if (user) setUserEdit(user);
   }, []);
 
   
   const requestSuccess = (msg: string) =>
   {
     setOpenModal(false);
-    setAlert({ type: "success", text: "El usuario ha sido creado correctamente" });
+    setAlert({ type: "success", text: msg });
     setMessages(msg);
     setRefreshTable(prev => !prev);
     setTimeout(() => {setAlert(null)}, 5000);
@@ -39,7 +43,7 @@ export const useUserForms = () =>
     setOpenModal(false);
     setAlert({ type: "error", text: msg });
     setMessages(msg);
-    setRefreshTable(false);
+    setRefreshTable(prev => !prev);
     setTimeout(() => {setAlert(null)}, 5000);
   }
 
@@ -53,9 +57,11 @@ export const useUserForms = () =>
     messages,
     alert,
     refreshTable,
+    setRefreshTable,
     openModalType,
     requestSuccess,
     requestFailed,
-    formRef
+    formRef,
+    userEdit,
   };
 }

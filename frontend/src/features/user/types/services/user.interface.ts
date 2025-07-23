@@ -16,7 +16,7 @@ export interface IUserPropierties
 {
   id: string;
   name: string;
-  lastName: string;
+  lastname: string;
   username: string;
   birthday: string;
   hasPassport: boolean;

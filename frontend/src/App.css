@@ -40,3 +40,14 @@
 .read-the-docs {
   color: #888;
 }
+
+.custom-header {
+  background-color: #1976d2 !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.MuiButtonBase-root .MuiIconButton-root .MuiIconButton-sizeSmall .MuiDataGrid-menuIconButton
+{
+  color: #fff !important;
+}
