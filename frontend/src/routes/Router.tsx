@@ -4,6 +4,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import DataTable from '../features/user/pages/UserManagement';
 import '../App.css';
 import '../index.css';
+import NotFound from '../features/share/pages/404';
+import Loanding from '../features/share/Layout/Loanding';
 
 /** Permite manejar las rutas de la aplicación **/
 function AppRouter() {
@@ -18,12 +20,14 @@ function AppRouter() {
     return () => clearTimeout(timer);
   }, []);
 
+  if (loading) { return <Loanding />;} 
+
   return (
     <div className="App">
      <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element={<DataTable />} />
-          <Route path="*" />
+          <Route path="*" element={ <NotFound />}/>
         </Routes>
       </BrowserRouter>
     </div> 

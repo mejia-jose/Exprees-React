@@ -10,16 +10,20 @@
 
 
   1. Página de Gestión de usuarios
+  2. Página 404
+  3. Loader de carga
+  4. Validación de campos
 
   - Solución:
    Se desarrolló un repositorio unificado que contiene el frontend y backend de una aplicación CRUD de usuarios. El backend fue implementado con Express utilizando arquitectura modular y hexagonal para mejorar la organización del código, facilitar pruebas y mantener una separación clara entre capas. El frontend fue desarrollado en React con Material UI para construir una interfaz visual moderna y responsiva.
 
-  - Página:
-  /ticket
-
 # Especificaciones:
 
-El backend fue desarrollado con las siguientes tecnologías:
+1. Ejecutar y correr el backend
+   - npm i
+   - npm run dev
+
+2. El backend fue desarrollado con las siguientes tecnologías:
 
   - npm version 10.9.0
   - Node.js versión 22.12.0
@@ -28,7 +32,11 @@ El backend fue desarrollado con las siguientes tecnologías:
   - TypeScript
   - Cors 2.8.19
 
-El fronten fue desarrollado con las siguientes tecnologías:
+1. Ejecutar y correr el frontend
+   - npm i
+   - npm run dev
+
+2. El fronten fue desarrollado con las siguientes tecnologías:
 
   - npm version 10.9.0
   - Node.js versión 22.12.0

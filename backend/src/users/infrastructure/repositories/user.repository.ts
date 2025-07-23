@@ -15,9 +15,7 @@ export class UserRepository implements IUserRepository
     async listAll(pageNumber: number, pageElements: number): Promise<UserEntity[]> 
     {
         const users = Array.from(this.users.values());
-        const pageStart = (pageNumber -1) * pageElements;
-        const pageEnd = await this.countAll();
-        return users.slice(pageNumber,pageEnd);
+        return users;
     }
 
     /**Permite obtener el total de usuarios registrados **/

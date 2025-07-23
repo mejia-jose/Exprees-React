@@ -10,7 +10,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 
 import { useGetUsers } from '../hooks/useGetUser';
-import Loanding from '../components/Loanding';
+import Loanding from '../../share/Layout/Loanding';
 import { useEffect, useState } from 'react';
 import { CustomDialog } from './CustomDialog';
 import { deleteUserByID } from '../services/delete-user.service';
@@ -41,13 +41,13 @@ const DataTable: React.FC<DataTableProps> = ({ refresh,onEditUser,setRefreshTabl
         );
       }
      },
-    { field: 'age', headerName: 'Edad',type: 'number',flex:1, minWidth: 60,align:'center', headerClassName: 'custom-header',
+    { field: 'age', headerName: 'Edad',type: 'number',flex:1, minWidth: 40,align:'center', headerClassName: 'custom-header',
       valueGetter : (value) => value + ' años'
      },
     { field: 'registeredAt',headerName: 'Registrado el',flex:1, minWidth: 150, type:'dateTime',headerClassName: 'custom-header',
       valueGetter: (value) => new Date(value),
     },
-    { field: 'actions', headerName: 'Acciones', flex:1, minWidth: 100, type: 'actions',align:'center',headerClassName: 'custom-header',
+    { field: 'actions', headerName: 'Acciones', flex:1, minWidth: 120, type: 'actions',align:'center',headerClassName: 'custom-header',
       getActions: (params) =>
       [
         <GridActionsCellItem
@@ -124,14 +124,7 @@ const DataTable: React.FC<DataTableProps> = ({ refresh,onEditUser,setRefreshTabl
         pageSizeOptions={[5,10.25]}
         localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         /* checkboxSelection */
-        sx={{ border: 0,width:
-      {
-        sx: 300,
-        sm: 600,
-        md: 900,
-        lg: 1200,
-        xl: 1500
-      } }}
+        sx={{ border: 0 }}
       />
 
       { openModalDelete && (
