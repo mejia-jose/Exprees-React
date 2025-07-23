@@ -19,11 +19,13 @@
 
 # Especificaciones:
 
-1. Ejecutar y correr el backend
+1. Instalar dependencias
    - npm i
-   - npm run dev
 
-2. El backend fue desarrollado con las siguientes tecnologías:
+2. Ejecutar el proyecto backend
+  - npm run dev
+
+3. El backend fue desarrollado con las siguientes tecnologías:
 
   - npm version 10.9.0
   - Node.js versión 22.12.0
@@ -32,11 +34,13 @@
   - TypeScript
   - Cors 2.8.19
 
-1. Ejecutar y correr el frontend
+1. Instalar dependencias
    - npm i
+
+2. Ejecutar el proyecto frontend
    - npm run dev
 
-2. El fronten fue desarrollado con las siguientes tecnologías:
+3. El fronten fue desarrollado con las siguientes tecnologías:
 
   - npm version 10.9.0
   - Node.js versión 22.12.0
