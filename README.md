@@ -19,6 +19,7 @@
 
 # Especificaciones:
 
+# Backend 
 1. Instalar dependencias
    - npm i
 
@@ -34,6 +35,7 @@
   - TypeScript
   - Cors 2.8.19
 
+# Frontend
 1. Instalar dependencias
    - npm i
 
