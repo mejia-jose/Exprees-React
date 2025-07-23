@@ -12,7 +12,7 @@ interface IPaginationData
   records: IUserPropierties[];
 }
 
-interface IUserPropierties
+export interface IUserPropierties
 {
   id: string;
   name: string;

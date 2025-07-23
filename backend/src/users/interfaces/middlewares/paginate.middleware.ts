@@ -6,7 +6,7 @@ export const Pagination = (req: Request, res: Response ,next: NextFunction) =>
 {   
     const { page, limit} = req.query;
     const pageNumber = parseInt(page as string, 1);
-    const numberElements = parseInt(limit as string, 10);
+    const numberElements = parseInt(limit as string, 1000);
 
     if(pageNumber < 1 || numberElements < 1)
     {

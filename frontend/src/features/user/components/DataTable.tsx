@@ -4,17 +4,18 @@ import moment from 'moment';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-import { useGetUsers } from '../hooks/get-users.hooks';
+import { useGetUsers } from '../hooks/useGetUser';
 import Loanding from '../components/Loanding';
 import { useEffect, useState } from 'react';
 import { CustomDialog } from './CustomDialog';
 import { deleteUserByID } from '../services/delete-user.service';
 import CustomAlerts from './CustomAlerts';
 import { Box } from '@mui/material';
+import type { DataTableProps } from '../types/components/datatable.type';
 
 moment.locale('es');
 
-const DataTable: React.FC<{refresh: boolean}> = ({ refresh }) => {
+const DataTable: React.FC<DataTableProps> = ({ refresh,onEditUser }) => {
 
   /**Se definen las columnas de la tabla **/
   const columns: GridColDef[] = [
@@ -36,6 +37,7 @@ const DataTable: React.FC<{refresh: boolean}> = ({ refresh }) => {
           icon={ <EditIcon/>}
           label='Edit'
           color="primary"
+          onClick={ () => onEditUser(params.row) }
         />,
         <GridActionsCellItem
           icon={ <DeleteIcon/>}
@@ -56,7 +58,7 @@ const DataTable: React.FC<{refresh: boolean}> = ({ refresh }) => {
 
   /** Hook para el listado de usuarios **/
   const {users, loanding, refetch} = useGetUsers();
-  const { pageNumber,pageElements, records } = users;
+  const {pageNumber,pageElements, records } = users;
   const paginationModel = { page: pageNumber, pageSize: pageElements };
 
   /** Permite abrir el modal de eliminar usuario **/
@@ -101,7 +103,7 @@ const DataTable: React.FC<{refresh: boolean}> = ({ refresh }) => {
         rows={records}
         columns={columns}
         initialState={{ pagination: { paginationModel } }}
-        pageSizeOptions={[5, 10]}
+        pageSizeOptions={[5,10.25]}
         /* checkboxSelection */
         sx={{ border: 0 }}
       />

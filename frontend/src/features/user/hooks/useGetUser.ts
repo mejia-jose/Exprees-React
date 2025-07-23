@@ -10,7 +10,7 @@ export function useGetUsers()
   const [loanding, setLoanding] = useState<boolean>(true);
   const [error, setError] = useState<unknown>(null);
 
-  /** Se usa un callback con el fin de memorizar la funcion getUsers, y evitar que se vuelva a cargar en cada rendezido */
+  /** Se usa un callback con el fin de memorizar la funcion getUsers, y evitar que se vuelva a cargar en cada renderizado */
   const refetch = useCallback(() =>
   {
     setLoanding(true);

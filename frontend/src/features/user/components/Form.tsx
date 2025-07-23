@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import moment from 'moment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
@@ -6,7 +7,6 @@ import { FormControlLabel, Stack, Box, TextField, Checkbox } from '@mui/material
 
 import type { FormProps, IUseStateForm } from '../types/components/form.type';
 import { createUser } from '../services/create-user.service';
-import moment from 'moment';
 
 const Form = React.forwardRef<HTMLFormElement,FormProps>(({type, onSuccess, onError}, ref) => {
 
@@ -20,9 +20,7 @@ const Form = React.forwardRef<HTMLFormElement,FormProps>(({type, onSuccess, onEr
         age: 0
     });  
 
-    const [formError, setFormError] = useState('');
-
-    /**Permite consumir el servcio que envia la información del usuario a la api y registrarla **/
+    /**Permite consumir el servicio que envia la información del usuario a la api y registrarla **/
     const saveUser = async (event: React.FormEvent<HTMLFormElement>) =>
     {
         event.preventDefault();

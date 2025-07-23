@@ -1,6 +1,7 @@
 export interface IPropsDialog
 {
     openModal: boolean;
+    type?: 'add' | 'edit' | null;
     close: () => void;
     action?: () => void;
     nameButton: string,
