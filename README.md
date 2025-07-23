@@ -19,6 +19,9 @@
 
 # Especificaciones:
 
+# Rama principal (Se debe tomar como rama principal la rama(master))
+ - master
+
 # Backend 
 1. Instalar dependencias
    - npm i
