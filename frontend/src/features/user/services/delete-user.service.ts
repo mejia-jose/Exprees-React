@@ -1,12 +1,12 @@
 import axios from "axios";
+import { ENDPOINTS_API } from "../../../config/api.config";
 
 /** Permite Eliminar un usuario **/
 export async function deleteUserByID(id:string):Promise<boolean>
 {
    try
    {
-      const ENDPOINT = `http://localhost:3000/api/user/${id}`;
-      const response = await axios.delete(ENDPOINT)
+      const response = await axios.delete(`${ENDPOINTS_API.USER.DELETE}/${id}`)
       return response.status === 200;
    } catch (error:any)
    {

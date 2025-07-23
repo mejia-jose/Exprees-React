@@ -3,7 +3,7 @@ export interface CreateUserDTO
     name: string;
     lastname: string;
     username: string;
-    birthday: Date;
+    birthdate: Date;
     hasPassport: boolean;
     age: number;
 }

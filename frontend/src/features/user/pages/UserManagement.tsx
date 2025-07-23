@@ -1,50 +1,79 @@
-import { Container,Button,Box } from '@mui/material';
+import { Container,Button,Box, useMediaQuery, useTheme } from '@mui/material';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
 import DataTable from '../components/DataTable';
 import Titles from '../components/Titles';
 import { CustomDialog } from '../components/CustomDialog';
-import { useState } from 'react';
+import CustomAlerts from '../components/CustomAlerts';
+import { useUserForms } from '../hooks/useUserForms';
 
 /** Componente principal de la gestión de usuarios **/
 function UserManagement() {
  
-  const [openModalAdd, setOpenModalAdd] = useState<boolean>(false);
-  const [fullWidth, setFullWidth] = useState(false);
-  
-  const openModalNewUser = () =>
-  {
-    setOpenModalAdd(true);
-    setFullWidth(true);
-  }
+  const { 
+    openModal,
+    modalType, 
+    setOpenModal,
+    fullWidth,
+    messages,
+    alert,
+    refreshTable,
+    openModalType,
+    requestSuccess,
+    setRefreshTable,
+    requestFailed,
+    formRef,
+    userEdit
+  } = useUserForms();
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
-    <Container maxWidth="xl" sx={{ mt: 2, mb: 1 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
-        <Titles text='Gestión de usuarios'/>
+    <Container maxWidth="xl">
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',flexWrap: 'wrap',gap: 2,mb: 2}}>
+        <Box>
+          <Titles text='Gestión de usuarios'/>
+        </Box>
         
-        <Button
+        <Box>
+          <Button
           variant="contained"
           color="primary"
+          fullWidth={isMobile}
           startIcon={<AddBoxIcon/> }
-          sx={{ float: 'right', mb:2,minWidth:200 }}
-          onClick={ openModalNewUser}
+          sx={{ float: 'right', mb:2,minWidth:200,  backgroundColor: '#1976d2',borderRadius: '8px' }}
+          onClick={ () => openModalType('add')}
         >
           Añadir nuevo usuario
         </Button>
+        </Box>
       </Box>
 
-      <DataTable/> 
+      { alert && messages && <CustomAlerts type={alert?.type} text={alert?.text} /> }
 
-      { openModalAdd && (
+      <Box sx={{ height: '600px', width: '100%', overflow: 'auto' }}>
+         <DataTable refresh={refreshTable} setRefreshTable={setRefreshTable} onEditUser={(userEdit) => openModalType('edit', userEdit)}/> 
+      </Box>
+
+      { openModal && (
           <CustomDialog
-            openModal={openModalAdd}
-            close={ () => setOpenModalAdd(false)}
-            title='Registrar usuario'
+            openModal={openModal}
+            close={ () => setOpenModal(false)}
+            title= { modalType === 'add' ? 'Registrar usuario' : 'Actualizar información'}
             color ='primary'
-            nameButton = 'Guardar'
+            type={modalType}
+            nameButton = { modalType === 'add' ? 'Guardar' : 'Actualizar' }
             fullWidth={fullWidth}
-            action={ () =>{}
-            
+            formRef={formRef}
+            onSuccess={requestSuccess} 
+            onError={requestFailed}
+            userEdit= {userEdit}
+            action={ () =>{
+                if (formRef.current) {
+                  formRef.current.requestSubmit(); 
+                }
+              }
             }
           />
         )

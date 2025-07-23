@@ -16,9 +16,8 @@ export class UserRepository implements IUserRepository
     {
         const users = Array.from(this.users.values());
         const pageStart = (pageNumber -1) * pageElements;
-        const pageEnd = pageStart + pageElements;
-
-        return users.slice(pageStart,pageEnd);
+        const pageEnd = await this.countAll();
+        return users.slice(pageNumber,pageEnd);
     }
 
     /**Permite obtener el total de usuarios registrados **/
